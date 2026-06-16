@@ -181,9 +181,11 @@ So source files such as `.ts`, `.py`, or `.tsx` are not scanned as memory/config
 npm test
 npm run typecheck
 npm run build
-python C:\Users\11153\.codex\skills\.system\skill-creator\scripts\quick_validate.py skills/enforced-unlearning
+python <path-to-codex-skill-creator>/scripts/quick_validate.py skills/enforced-unlearning
 npm audit --audit-level=high
 ```
+
+For Codex users, replace `<path-to-codex-skill-creator>` with the local path to Codex's `skill-creator` system skill.
 
 Current validation:
 
