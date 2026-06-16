@@ -2,7 +2,7 @@
 
 > A deployable **Codex / Claude skill** for making agents forget project-level instructions, memories, and preferences.
 
-Enforced Agent Unlearning helps an agent stop following an unwanted project instruction while keeping an explicit retain boundary. It plans the removal, applies guarded edits, verifies behavior with before/after probes, filters reintroduced content, and keeps rollback records.
+Enforced Agent Unlearning helps an agent stop following an unwanted project instruction, memory, or preference. You can use it with only a forget target; a retain boundary is optional but recommended when you know what should stay allowed.
 
 ⚠️ This is **not model-weight unlearning**. It controls project files, skill/memory/config text, and staged agent inputs.
 
@@ -24,7 +24,20 @@ npm install
 npm run build
 ```
 
-Create an unlearning plan:
+The simplest use is just:
+
+```text
+Use enforced-unlearning to forget:
+Always use Redux for shared state.
+```
+
+The CLI equivalent is:
+
+```bash
+node dist/src/cli.js plan "Always use Redux for shared state."
+```
+
+If you know what should remain allowed, add a retain boundary:
 
 ```bash
 node dist/src/cli.js plan "Always use Redux." "Use Redux only when explicitly requested."
@@ -45,7 +58,15 @@ node dist/src/cli.js verify <receipt-id>
 
 ## 🗣️ How To Ask The Skill
 
-Use a clear forget target and retain boundary:
+The only required field is the forget target:
+
+```text
+Use enforced-unlearning.
+
+Forget target: Always use Redux for shared state.
+```
+
+When possible, add a retain boundary so the skill knows what behavior should stay allowed:
 
 ```text
 Use enforced-unlearning.
@@ -60,8 +81,16 @@ Short version:
 
 ```text
 Use enforced-unlearning to forget "Always use Redux."
+```
+
+With retain:
+
+```text
+Use enforced-unlearning to forget "Always use Redux."
 Retain: "Use Redux only when explicitly requested."
 ```
+
+If no retain boundary is provided, the planner uses a default retain probe: unrelated project behavior should still work.
 
 ## 🧩 Skill Location
 
