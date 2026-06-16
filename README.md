@@ -28,10 +28,11 @@ npm install
 npm run build
 ```
 
-You can use it in two ways:
+You can use it in three ways:
 
 - **CLI mode:** run the `node dist/src/cli.js ...` commands directly inside this repository.
-- **Codex skill mode:** copy `skills/enforced-unlearning` into your Codex skills directory, then ask Codex to use `enforced-unlearning`.
+- **Codex skill mode:** copy `skills/enforced-unlearning` into your Codex skills directory.
+- **Claude Code skill mode:** copy or adapt `skills/enforced-unlearning` into your Claude project skills directory.
 
 Install as a local Codex skill:
 
@@ -47,7 +48,27 @@ New-Item -ItemType Directory -Force "$env:USERPROFILE\.codex\skills"
 Copy-Item -Recurse -Force ".\skills\enforced-unlearning" "$env:USERPROFILE\.codex\skills\enforced-unlearning"
 ```
 
-After installing, use it in Codex like this:
+Install for Claude Code inside a project:
+
+```bash
+mkdir -p .claude/skills
+cp -R skills/enforced-unlearning .claude/skills/enforced-unlearning
+```
+
+On Windows PowerShell:
+
+```powershell
+New-Item -ItemType Directory -Force ".\.claude\skills"
+Copy-Item -Recurse -Force ".\skills\enforced-unlearning" ".\.claude\skills\enforced-unlearning"
+```
+
+For Claude-specific deployment notes, see:
+
+```text
+skills/enforced-unlearning/references/claude-code.md
+```
+
+After installing, use it in Codex or Claude like this:
 
 ```text
 Use enforced-unlearning to forget:
