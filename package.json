@@ -1,0 +1,26 @@
+{
+  "name": "enforced-agent-unlearning",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "unlearn": "dist/src/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "commander": "^14.0.0",
+    "fast-glob": "^3.3.3",
+    "yaml": "^2.8.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.8.0",
+    "vitest": "^4.1.8"
+  }
+}

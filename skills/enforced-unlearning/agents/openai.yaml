@@ -1,0 +1,4 @@
+interface:
+  display_name: "Enforced Unlearning"
+  short_description: "Remove and prevent reintroduction of project agent instructions"
+  default_prompt: "Use $enforced-unlearning to plan removal of a project instruction while preserving explicitly retained behavior."
