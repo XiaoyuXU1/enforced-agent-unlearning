@@ -19,6 +19,54 @@ Enforced Agent Unlearning helps an agent stop following an unwanted project inst
 
 ## 🚀 Quick Start
 
+Clone and build:
+
+```bash
+git clone https://github.com/XiaoyuXU1/enforced-agent-unlearning.git
+cd enforced-agent-unlearning
+npm install
+npm run build
+```
+
+You can use it in two ways:
+
+- **CLI mode:** run the `node dist/src/cli.js ...` commands directly inside this repository.
+- **Codex skill mode:** copy `skills/enforced-unlearning` into your Codex skills directory, then ask Codex to use `enforced-unlearning`.
+
+Install as a local Codex skill:
+
+```bash
+mkdir -p ~/.codex/skills
+cp -R skills/enforced-unlearning ~/.codex/skills/enforced-unlearning
+```
+
+On Windows PowerShell:
+
+```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.codex\skills"
+Copy-Item -Recurse -Force ".\skills\enforced-unlearning" "$env:USERPROFILE\.codex\skills\enforced-unlearning"
+```
+
+After installing, use it in Codex like this:
+
+```text
+Use enforced-unlearning to forget:
+Always use Redux for shared state.
+```
+
+Or, if you know what should remain allowed:
+
+```text
+Use enforced-unlearning.
+
+Forget target: Always use Redux for shared state.
+Retain boundary: Use Redux only when I explicitly ask for Redux.
+```
+
+## 🧪 Try It Without Installing
+
+Use the CLI directly:
+
 ```bash
 npm install
 npm run build
