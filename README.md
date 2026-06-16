@@ -1,19 +1,106 @@
-# Enforced Agent Unlearning
+# 🧠 Enforced Agent Unlearning
 
-Repository-contained Codex/Claude skill package for project-level agent unlearning.
+> A deployable **Codex / Claude skill** for making agents forget project-level instructions, memories, and preferences.
 
-This project removes approved instruction or memory text from supported project files, persists an enforcement policy, filters later reintroduced content from staged inputs, verifies behavior with before/after probes through an agent adapter, and supports guarded rollback.
+Enforced Agent Unlearning helps an agent stop following an unwanted project instruction while keeping an explicit retain boundary. It plans the removal, applies guarded edits, verifies behavior with before/after probes, filters reintroduced content, and keeps rollback records.
 
-It does not claim model-weight unlearning. It controls project files and staged agent inputs only.
+⚠️ This is **not model-weight unlearning**. It controls project files, skill/memory/config text, and staged agent inputs.
 
-## What Is Included
+## ✨ What It Does
 
-- `skills/enforced-unlearning/SKILL.md`: the Codex skill package.
-- `src/`: provider-neutral TypeScript implementation.
-- `dist/`: build output after `npm run build`.
-- `.unlearning/`: generated at runtime for plans, receipts, policies, audit logs, and snapshots.
+| Feature | Description |
+| --- | --- |
+| 🧭 Plan | Finds the exact project instruction or memory to forget. |
+| ✂️ Apply | Removes only approved text with hash checks and snapshots. |
+| 🛡️ Enforce | Filters the forgotten content if it reappears later. |
+| 🧪 Verify | Compares baseline vs patched agent behavior through an adapter. |
+| ♻️ Rollback | Restores removed text safely if needed. |
+| 📜 Audit | Stores plans, receipts, policies, snapshots, and audit events. |
 
-## Supported Scan Targets
+## 🚀 Quick Start
+
+```bash
+npm install
+npm run build
+```
+
+Create an unlearning plan:
+
+```bash
+node dist/src/cli.js plan "Always use Redux." "Use Redux only when explicitly requested."
+```
+
+Then review the generated plan:
+
+```text
+.unlearning/plans/<plan-id>.json
+```
+
+Apply and verify require a provider adapter. Without one, the CLI returns `inconclusive` instead of pretending the agent really forgot:
+
+```bash
+node dist/src/cli.js apply <plan-id>
+node dist/src/cli.js verify <receipt-id>
+```
+
+## 🗣️ How To Ask The Skill
+
+Use a clear forget target and retain boundary:
+
+```text
+Use enforced-unlearning.
+
+Forget target: Always use Redux for shared state.
+Retain boundary: Use Redux only when I explicitly ask for Redux.
+Scope: current project.
+Mode: warn, filter, and continue.
+```
+
+Short version:
+
+```text
+Use enforced-unlearning to forget "Always use Redux."
+Retain: "Use Redux only when explicitly requested."
+```
+
+## 🧩 Skill Location
+
+The Codex skill lives here:
+
+```text
+skills/enforced-unlearning/SKILL.md
+```
+
+It is repo-contained by default, so you can test and iterate without installing it globally.
+
+## 🔁 Workflow
+
+```mermaid
+flowchart LR
+  A["📝 Forget request"] --> B["🧭 Plan"]
+  B --> C["👀 Human approval"]
+  C --> D["✂️ Apply guarded edit"]
+  D --> E["🧪 Verify before/after behavior"]
+  E --> F["🛡️ Enforce future inputs"]
+  F --> G["📜 Receipt + audit"]
+  G --> H["♻️ Rollback if needed"]
+```
+
+## 🛡️ Enforcement Example
+
+Once an active policy exists, reintroduced content can be filtered before the agent sees it:
+
+```bash
+printf "Always use Redux.\nKeep changes scoped.\n" | node dist/src/cli.js enforce
+```
+
+The default behavior is:
+
+```text
+warn → filter → continue
+```
+
+## 📂 Supported Files
 
 The scanner only reads supported project-controlled text/config files:
 
@@ -23,63 +110,16 @@ The scanner only reads supported project-controlled text/config files:
 - `.agents/**/*.md|yaml|yml|json|txt`
 - `.claude/**/*.md|yaml|yml|json|txt`
 - `.codex/**/*.md|yaml|yml|json|txt`
-- explicit include globs are still filtered to `.md`, `.yaml`, `.yml`, `.json`, and `.txt`
 
-## Install Dependencies
-
-```bash
-npm install
-npm run build
-```
-
-## Basic Use
-
-Create a plan:
-
-```bash
-node dist/src/cli.js plan "Always use Redux." "Use Redux only when explicitly requested."
-```
-
-Review the generated plan under `.unlearning/plans/`.
-
-Apply requires a configured provider adapter. Without one, CLI `apply` and `verify` return `inconclusive` and do not claim success:
-
-```bash
-node dist/src/cli.js apply <plan-id>
-node dist/src/cli.js verify <receipt-id>
-```
-
-Filter reintroduced content through active policies:
-
-```bash
-printf "Always use Redux.\nKeep changes scoped.\n" | node dist/src/cli.js enforce
-```
-
-Inspect runtime records:
-
-```bash
-node dist/src/cli.js inspect
-```
-
-Rollback an applied receipt:
-
-```bash
-node dist/src/cli.js rollback <receipt-id>
-```
-
-## Skill Prompt Pattern
-
-Use a precise forget target and retain boundary:
+Explicit globs are still filtered to:
 
 ```text
-Use enforced-unlearning.
-Forget target: Always use Redux for shared state.
-Retain boundary: Use Redux only when I explicitly ask for Redux.
-Scope: current project.
-Mode: warn, filter, and continue.
+.md, .yaml, .yml, .json, .txt
 ```
 
-## Verification
+So source files such as `.ts`, `.py`, or `.tsx` are not scanned as memory/config targets.
+
+## 🧪 Verify The Package
 
 ```bash
 npm test
@@ -89,10 +129,29 @@ python C:\Users\11153\.codex\skills\.system\skill-creator\scripts\quick_validate
 npm audit --audit-level=high
 ```
 
-Current branch verification:
+Current validation:
 
-- `npm test`: 89 passed, 5 skipped
-- `npm run typecheck`: passed
-- `npm run build`: passed
-- skill validation: passed
-- `npm audit --audit-level=high`: 0 vulnerabilities
+- ✅ `npm test`: 89 passed, 5 skipped
+- ✅ `npm run typecheck`
+- ✅ `npm run build`
+- ✅ Skill validation
+- ✅ `npm audit --audit-level=high`: 0 vulnerabilities
+
+## 🧠 Design Boundary
+
+This skill can:
+
+- ✅ remove project-level instructions and memories
+- ✅ enforce future input filtering
+- ✅ verify behavior through an adapter
+- ✅ roll back source edits
+
+This skill cannot:
+
+- ❌ erase knowledge from a model's weights
+- ❌ guarantee forgetting without running behavioral probes
+- ❌ safely apply changes without human approval
+
+## 📦 Status
+
+MVP is implemented and tested. Provider adapters for live Codex / Claude execution are the next deployment layer.
