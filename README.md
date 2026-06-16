@@ -28,9 +28,8 @@ npm install
 npm run build
 ```
 
-You can use it in three ways:
+You can use it in two main ways:
 
-- **CLI mode:** run the `node dist/src/cli.js ...` commands directly inside this repository.
 - **Codex skill mode:** copy `skills/enforced-unlearning` into your Codex skills directory.
 - **Claude Code skill mode:** copy or adapt `skills/enforced-unlearning` into your Claude project skills directory.
 
@@ -82,47 +81,6 @@ Use enforced-unlearning.
 
 Forget target: Always use Redux for shared state.
 Retain boundary: Use Redux only when I explicitly ask for Redux.
-```
-
-## 🧪 Try It Without Installing
-
-Use the CLI directly:
-
-```bash
-npm install
-npm run build
-```
-
-The simplest use is just:
-
-```text
-Use enforced-unlearning to forget:
-Always use Redux for shared state.
-```
-
-The CLI equivalent is:
-
-```bash
-node dist/src/cli.js plan "Always use Redux for shared state."
-```
-
-If you know what should remain allowed, add a retain boundary:
-
-```bash
-node dist/src/cli.js plan "Always use Redux." "Use Redux only when explicitly requested."
-```
-
-Then review the generated plan:
-
-```text
-.unlearning/plans/<plan-id>.json
-```
-
-Apply and verify require a provider adapter. Without one, the CLI returns `inconclusive` instead of pretending the agent really forgot:
-
-```bash
-node dist/src/cli.js apply <plan-id>
-node dist/src/cli.js verify <receipt-id>
 ```
 
 ## 🗣️ How To Ask The Skill
