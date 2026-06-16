@@ -32,9 +32,9 @@ Use the repository's \`unlearn\` CLI for deterministic filesystem operations.
 
 ## Workflow
 
-1. Restate the exact forget target and retain boundary.
-2. Run \`unlearn plan "<target>" "<retain boundary>"\`. Append additional retain boundaries as positional arguments.
-3. Show the affected files, proposed removals, retain boundary, and probes.
+1. Restate the exact forget target. If the user provides a retain boundary, restate it too.
+2. Run \`unlearn plan "<target>"\`. If retain boundaries are provided, append them as positional arguments.
+3. Show the affected files, proposed removals, retain boundary if provided, and probes.
 4. Never run \`unlearn apply\` before explicit approval.
 5. After approval, apply the plan through the configured agent adapter.
 6. Report source removal, behavioral verification, and enforcement separately.

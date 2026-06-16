@@ -26,7 +26,8 @@ describe("Task 12 acceptance", () => {
 
     expect(skill).toContain("Never claim model-weight unlearning.");
     expect(skill).not.toContain("$CODEX_HOME/skills/enforced-unlearning");
-    expect(skill).toContain('`unlearn plan "<target>" "<retain boundary>"`');
+    expect(skill).toContain('`unlearn plan "<target>"`');
+    expect(skill).toContain("If retain boundaries are provided");
     expect(skill).toContain(
       "If no provider adapter is configured, `unlearn apply` and `unlearn verify` return `inconclusive` without claiming success.",
     );
